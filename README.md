@@ -1,4 +1,4 @@
-# TTY1 Dashboard Demo
+# TTY1 Dashboard
 
 This is a minimal Go program that runs on tty1 and redraws the screen every
 two seconds. It is intended to be launched by systemd and replaces getty on
@@ -35,7 +35,7 @@ systemctl disable --now getty@tty1.service
 
 ```ini
 [Unit]
-Description=TTY1 Dashboard Demo
+Description=TTY1 Dashboard
 After=systemd-user-sessions.service
 Conflicts=getty@tty1.service
 
