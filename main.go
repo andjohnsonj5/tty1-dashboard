@@ -43,6 +43,14 @@ func readIPBrief() string {
 	return strings.TrimSpace(string(output))
 }
 
+func readPingStatus() string {
+	output, err := exec.Command("ping", "-c", "5", "-i", "0.1", "-W", "0.5", "-w", "3", "223.6.6.6").CombinedOutput()
+	if len(output) == 0 && err != nil {
+		return err.Error()
+	}
+	return strings.TrimSpace(string(output))
+}
+
 func readMachineID() string {
 	data, err := os.ReadFile("/etc/machine-id")
 	if err != nil {
@@ -93,6 +101,9 @@ func main() {
 		fmt.Fprintf(writer, "Time   : %s (UTC+8 BeiJing)\n", time.Now().In(beijing).Format("2006-01-02 15:04:05"))
 		fmt.Fprintf(writer, "Uptime : %s seconds\n", readUptime())
 		fmt.Fprintf(writer, "IP     : %s\n", ipBrief)
+		fmt.Fprintln(writer, readPingStatus())
+		fmt.Fprintln(writer, "")
+		fmt.Fprintf(writer, "Machine: %s\n", machineID)
 		renderMachineIDQR(writer, machineID)
 		writer.Flush()
 	}
